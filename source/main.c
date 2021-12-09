@@ -39,7 +39,10 @@
 #include "clock_config.h"
 #include "MKL25Z4.h"
 #include "fsl_debug_console.h"
+
 /* TODO: insert other include files here. */
+#include "touch.h"
+#include "led.h"
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -58,5 +61,25 @@ int main(void)
     BOARD_InitDebugConsole();
 #endif
 
+    Touch_Init();
+    LED_init();
+    LED_Color_Config();
+
+    while (1)
+    {
+//    	int touch = get_tsi_value();
+//    	printf("touch value: %d\n\r", touch);
+
+//    	LED_ON(100,255,100);
+
+    	for (int i=0; i<TOTAL_COLORS; i++)
+    	{
+    		LED_ON(color[i].red_value,color[i].green_value,color[i].blue_value);
+    		for (int j = 0; j<1000; j++)
+    			for (int k=0; k<1000; k++)
+    				;
+    	}
+
+    }
     //main code here
 }

@@ -1,125 +1,63 @@
-/*******************************************************************************
- * PES Course Project
- * File Name: led.h
- * Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu (tanmay-mk)
- *********************************************************************************/
+/*********************************************************************************************
+ * PES Assignment 4
+ * File Name: pwm.h
+ * Author: Alexander G. Dean
+ * GitHub Link:https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_7/PWM_LED/Source/timers.c
+ ********************************************************************************************/
 #ifndef _LED_H_
 #define _LED_H_
 
-/*	LIBRARY FILES	*/
-#include <stdio.h>
-#include "board.h"
-#include "peripherals.h"
-#include "pin_mux.h"
-#include "clock_config.h"
+/*
+ * LIBRARY FILES TO BE INCLUDED
+ */
 #include "MKL25Z4.h"
-#include "fsl_debug_console.h"
-
-/*	MACROS	*/
-#define RED_LED_PIN 			18
-#define BLUE_LED_PIN 			1
-#define GREEN_LED_PIN 			19
 
 /*
- * @brief:an enumeration of colors as integer values
+ * MACROS
  */
-enum {
-	WHITE		= 0,
-	RED			= 1,
-	GREEN		= 2,
-	BLUE		= 4
+#define RED_LED_PIN 		18
+#define GREEN_LED_PIN 		19
+#define BLUE_LED_PIN 		1
+
+enum color_names
+{
+	RED,			//0xFF0000
+	GREEN,			//0x00FF00
+	BLUE,			//0x0000FF
+	WHITE,			//0xFFFFFF
+	YELLOW,			//0xFFFF00
+	MAGENTA,		//0xFF00FF
+	CYAN,			//0x00FFFF
+	TOTAL_COLORS
 };
 
-/*	FUNCTION PROTOTYPE	*/
-/*
- * @brief			: Initializes Red LED
- * @parameters		: none
- * @returns			: none
- */
-void RED_LED_INIT();
+typedef struct color_configuration
+{
+	uint32_t red_value;
+	uint32_t green_value;
+	uint32_t blue_value;
+}color_config;
+
+extern color_config color[TOTAL_COLORS];
+
+void LED_init();
+
+void LED_Color_Config();
 
 /*
- * @brief			: Initializes Blue LED
- * @parameters		: none
- * @returns			: none
+ * @brief: 					Turns on LED with specific RGB value.
+ *
+ * @parameters:
+ * 			red_value:		Turns ON the LED with a specific duty cycle
+ * 							for RED color.
+ * 			green_value: 	Turns ON the LED with a specific duty cycle
+ * 							for GREEN color.
+ * 			blue_value:		Turns ON the LED with a specific duty cycle
+ * 							for RED color.
+ *
+ * @returns: 				None.
  */
-void BLUE_LED_INIT();
+void LED_ON(uint32_t red_value, uint32_t green_value, uint32_t blue_value);
 
-/*
- * @brief			: Initializes Green LED
- * @parameters		: none
- * @returns			: none
- */
-void GREEN_LED_INIT();
-
-/*
- * @brief			: Turns ON Red LED
- * @parameters		: none
- * @returns			: none
- */
-void RED_LED_ON();
-
-/*
- * @brief			: Turns ON Blue LED
- * @parameters		: none
- * @returns			: none
- */
-void BLUE_LED_ON();
-
-/*
- * @brief			: Turns ON Green LED
- * @parameters		: none
- * @returns			: none
- */
-void GREEN_LED_ON();
-
-/*
- * @brief			: Turns ON All LEDs
- * @parameters		: none
- * @returns			: none
- */
-void WHITE_LED_ON();
-
-/*
- * @brief			: Turns ON a LED of specific color
- * @parameters		: LED_COLOR
- * @returns			: none
- */
-void LED_ON(int LED_COLOR);
-
-/*
- * @brief			: Turns OFF Red LED
- * @parameters		: none
- * @returns			: none
- */
-void RED_LED_OFF();
-
-/*
- * @brief			: Turns OFF Blue LED
- * @parameters		: none
- * @returns			: none
- */
-void BLUE_LED_OFF();
-
-/*
- * @brief			: Turns OFF Green LED
- * @parameters		: none
- * @returns			: none
- */
-void GREEN_LED_OFF();
-
-/*
- * @brief			: Turns OFF All LEDs
- * @parameters		: none
- * @returns			: none
- */
-void WHITE_LED_OFF();
-
-/*
- * @brief			: Turns OFF LED of a specific color
- * @parameters		: LED_COLOR
- * @returns			: none
- */
-void LED_OFF(int LED_COLOR);
 
 #endif /*_LED_H_*/

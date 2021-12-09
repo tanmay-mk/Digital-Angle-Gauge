@@ -4,19 +4,25 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../source/led.c \
 ../source/main.c \
 ../source/mtb.c \
-../source/semihost_hardfault.c 
+../source/semihost_hardfault.c \
+../source/touch.c 
 
 OBJS += \
+./source/led.o \
 ./source/main.o \
 ./source/mtb.o \
-./source/semihost_hardfault.o 
+./source/semihost_hardfault.o \
+./source/touch.o 
 
 C_DEPS += \
+./source/led.d \
 ./source/main.d \
 ./source/mtb.d \
-./source/semihost_hardfault.d 
+./source/semihost_hardfault.d \
+./source/touch.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
