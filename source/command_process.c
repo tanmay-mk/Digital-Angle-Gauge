@@ -13,6 +13,7 @@ Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-m
 
 /* 	OTHER FILES TO BE INCLUDED	*/
 #include "command_process.h"
+#include "led.h"
 
 /*	GENERIC PROTOTYPE FOR HANDLE FUNCTIONS*/
 typedef void (*cmd_handler_t)(int, char * argv[]);
@@ -142,23 +143,18 @@ void process_command(char *input)
 static void author_handler(int a, char * argv[])
 {
 	printf("Tanmay Mahendra Kothale\n\rtanmay.kothale@colorado.edu\n\rGitHub: tanmay-mk\r\n");
+	LED_ON(RED);
 }
 
 static void dump_handler(int a, char * argv[])
 {
-	uint32_t len = 0;
-	uint32_t start = 0;
-
-	sscanf(argv[1],"%x",&start);
-
-	if(strstr((char*)argv[2],"0x") || strstr((char*)argv[2],"0X"))//if input is in hex
-		{sscanf(argv[2],"%x",&len);}
-	else
-		{sscanf(argv[2],"%d",&len);}
+	printf("inside dump\n\r");
+	LED_ON(BLUE);
 }
 
 static void help_handler(int argc,char * argv[])
 {
+	LED_ON(GREEN);
 	printf("1. author\r\n");
 	printf("%s",commands[0].help_string);
 	printf("2. dump\r\n");

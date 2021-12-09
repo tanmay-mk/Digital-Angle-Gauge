@@ -57,7 +57,7 @@ void LED_Color_Config();
  *
  * @returns: 				None.
  */
-void LED_ON(uint32_t red_value, uint32_t green_value, uint32_t blue_value);
+void LED_ON(uint32_t color_name);
 
 
 #endif /*_LED_H_*/

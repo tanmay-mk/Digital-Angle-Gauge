@@ -150,11 +150,11 @@ void LED_init()
 	Init_Red_LED_PWM();
 }
 
-void LED_ON(uint32_t red_value, uint32_t green_value, uint32_t blue_value)
+void LED_ON(uint32_t color_name)
 {
-		TPM2->CONTROLS[0].CnV = red_value;
-		TPM2->CONTROLS[1].CnV = green_value;
-		TPM0->CONTROLS[1].CnV = blue_value;
+		TPM2->CONTROLS[0].CnV = color[color_name].red_value;
+		TPM2->CONTROLS[1].CnV = color[color_name].green_value;
+		TPM0->CONTROLS[1].CnV = color[color_name].blue_value;
 }
 
 void LED_OFF(void)

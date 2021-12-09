@@ -80,7 +80,7 @@ int main(void)
     printf("? ");
     while (1)
     {
-  	accumulate_line();
+    	accumulate_line();
     }
 
 /*

@@ -124,9 +124,10 @@ int __sys_write(int handle, char * buf, int size){
 	while(cbfifo_length(TRANSMIT) == cbfifo_capacity(TRANSMIT))
 		;
 
-	while(*buf != '\0'){
-		cbfifo_enqueue(TRANSMIT,buf,1);
-		buf++;
+	while (size > 0) {
+	  size_t bytes_written = cbfifo_enqueue(TRANSMIT, buf, size);
+	  size -= bytes_written;
+	  buf += bytes_written;
 	}
 
 	if (!(UART0->C2 & UART0_C2_TIE_MASK)) {

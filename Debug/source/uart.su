@@ -3,5 +3,5 @@ core_cm0plus.h:791:22:NVIC_ClearPendingIRQ	16	static
 core_cm0plus.h:804:22:NVIC_SetPriority	24	static
 uart.c:14:6:Init_UART0	32	static
 uart.c:83:6:UART0_IRQHandler	24	static
-libconfig-arm.h:247:5:__sys_write	32	static
+libconfig-arm.h:247:5:__sys_write	40	static
 libconfig-arm.h:241:5:__sys_readc	16	static
