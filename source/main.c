@@ -43,6 +43,10 @@
 /* TODO: insert other include files here. */
 #include "touch.h"
 #include "led.h"
+#include "test_cbfifo.h"
+#include "line_accumulate.h"
+#include "sysclock.h"
+#include "uart.h"
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -65,7 +69,22 @@ int main(void)
     LED_init();
     LED_Color_Config();
 
+    //initialize clock
+    sysclock_init();
+    //initialize UART0 with baud rate = 38400
+    Init_UART0(38400);
+    //test the cbfifo implementations
+    test_cbfifo();
+
+    printf("Welcome to Course Project!\r\n");
+    printf("? ");
     while (1)
+    {
+  	accumulate_line();
+    }
+
+/*
+ 	while (1)
     {
 //    	int touch = get_tsi_value();
 //    	printf("touch value: %d\n\r", touch);
@@ -81,5 +100,6 @@ int main(void)
     	}
 
     }
+*/
     //main code here
 }

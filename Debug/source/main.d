@@ -18,7 +18,9 @@ source/main.o source/main.d: ../source/main.c \
  C:\Users\tanma\Documents\MCUXpressoIDE_11.2.0_4120\workspace\ECEN5813-Course-Project\board/clock_config.h \
  C:\Users\tanma\Documents\MCUXpressoIDE_11.2.0_4120\workspace\ECEN5813-Course-Project\CMSIS/MKL25Z4.h \
  C:\Users\tanma\Documents\MCUXpressoIDE_11.2.0_4120\workspace\ECEN5813-Course-Project\utilities/fsl_debug_console.h \
- ../source/touch.h ../source/led.h
+ ../source/touch.h ../source/led.h ../source/test_cbfifo.h \
+ ../source/line_accumulate.h ../source/sysclock.h ../source/uart.h \
+ ../source/cbfifo.h
 
 C:\Users\tanma\Documents\MCUXpressoIDE_11.2.0_4120\workspace\ECEN5813-Course-Project\board/board.h:
 
@@ -61,3 +63,13 @@ C:\Users\tanma\Documents\MCUXpressoIDE_11.2.0_4120\workspace\ECEN5813-Course-Pro
 ../source/touch.h:
 
 ../source/led.h:
+
+../source/test_cbfifo.h:
+
+../source/line_accumulate.h:
+
+../source/sysclock.h:
+
+../source/uart.h:
+
+../source/cbfifo.h:

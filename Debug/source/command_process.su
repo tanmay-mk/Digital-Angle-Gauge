@@ -1,0 +1,4 @@
+command_process.c:67:6:process_command	88	static
+command_process.c:142:13:author_handler	16	static
+command_process.c:147:13:dump_handler	24	static
+command_process.c:160:13:help_handler	16	static
