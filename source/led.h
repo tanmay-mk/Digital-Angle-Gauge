@@ -39,6 +39,7 @@ typedef struct color_configuration
 }color_config;
 
 extern color_config color[TOTAL_COLORS];
+extern int brightness;
 
 void LED_init();
 
@@ -53,11 +54,11 @@ void LED_Color_Config();
  * 			green_value: 	Turns ON the LED with a specific duty cycle
  * 							for GREEN color.
  * 			blue_value:		Turns ON the LED with a specific duty cycle
- * 							for RED color.
+ * 							for BLUE color.
  *
  * @returns: 				None.
  */
-void LED_ON(uint32_t color_name);
+void LED_ON(uint32_t color_name, int brightness);
 
 
 #endif /*_LED_H_*/

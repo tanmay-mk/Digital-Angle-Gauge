@@ -7,6 +7,7 @@
 #include "led.h"
 
 color_config color[TOTAL_COLORS] = {0};
+int brightness = 1;
 
 void LED_Color_Config()
 {
@@ -150,11 +151,11 @@ void LED_init()
 	Init_Red_LED_PWM();
 }
 
-void LED_ON(uint32_t color_name)
+void LED_ON(uint32_t color_name, int brightness)
 {
-		TPM2->CONTROLS[0].CnV = color[color_name].red_value;
-		TPM2->CONTROLS[1].CnV = color[color_name].green_value;
-		TPM0->CONTROLS[1].CnV = color[color_name].blue_value;
+		TPM2->CONTROLS[0].CnV = color[color_name].red_value/brightness;
+		TPM2->CONTROLS[1].CnV = color[color_name].green_value/brightness;
+		TPM0->CONTROLS[1].CnV = color[color_name].blue_value/brightness;
 }
 
 void LED_OFF(void)
