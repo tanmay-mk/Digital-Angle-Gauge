@@ -19,6 +19,8 @@
 #define GREEN_LED_PIN 		19
 #define BLUE_LED_PIN 		1
 
+#define MAX_DUTY_CYCLE		0xFF
+
 enum color_names
 {
 	RED,			//0xFF0000
@@ -43,6 +45,7 @@ extern int brightness;
 
 void LED_init();
 
+void LED_OFF(void);
 void LED_Color_Config();
 
 /*

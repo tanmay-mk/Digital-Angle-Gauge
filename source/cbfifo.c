@@ -54,9 +54,9 @@ size_t cbfifo_enqueue(int buf_type, void *buf, size_t nbyte)
 
     else if (nbyte >= BUFFER_SIZE-fifo[buf_type].bufferLength)
     {
-        nbyte = BUFFER_SIZE-fifo[buf_type].bufferLength;       //checking for available spaces in the circular buffer.
-    }                                           //if nbytes is higher than available spaces, remaining elements
-                                                //will be discarded
+        nbyte = BUFFER_SIZE-fifo[buf_type].bufferLength;      	//checking for available spaces in the circular buffer.
+    }                                           				//if nbytes is higher than available spaces, remaining elements
+                                                				//will be discarded
     else {}
 
     masking_state = __get_PRIMASK();

@@ -1,5 +1,6 @@
-command_process.c:79:6:process_command	88	static
-command_process.c:154:13:brightness_handler	24	static
-command_process.c:175:13:author_handler	16	static
-command_process.c:181:13:dump_handler	16	static
-command_process.c:187:13:help_handler	16	static
+command_process.c:86:6:process_command	88	static
+command_process.c:164:13:brightness_handler	24	static
+command_process.c:195:13:angle_handler	24	static
+command_process.c:232:13:author_handler	16	static
+command_process.c:238:13:help_handler	16	static
+command_process.c:253:13:color_handler	48	static

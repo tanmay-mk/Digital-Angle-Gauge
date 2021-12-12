@@ -83,7 +83,7 @@ static void Init_Blue_LED_PWM()
 	//set clock source for tpm: 48 MHz
 	SIM->SOPT2 |= (SIM_SOPT2_TPMSRC(1) | SIM_SOPT2_PLLFLLSEL_MASK);
 	//load the counter and mod
-	TPM0->MOD = 0xFF;
+	TPM0->MOD = MAX_DUTY_CYCLE;
 	//set TPM count direction to up with a divide by 2 prescaler
 	TPM0->SC =  TPM_SC_PS(1);
 	// Continue operation in debug mode
@@ -107,7 +107,7 @@ static void Init_Red_LED_PWM()
 	//set clock source for tpm: 48 MHz
 	SIM->SOPT2 |= (SIM_SOPT2_TPMSRC(1) | SIM_SOPT2_PLLFLLSEL_MASK);
 	//load the counter and mod
-	TPM2->MOD = 0xFF;
+	TPM2->MOD = MAX_DUTY_CYCLE;
 	//set TPM count direction to up with a divide by 2 prescaler
 	TPM2->SC =  TPM_SC_PS(1);
 	// Continue operation in debug mode
@@ -131,7 +131,7 @@ static void Init_Green_LED_PWM()
 	//set clock source for tpm: 48 MHz
 	SIM->SOPT2 |= (SIM_SOPT2_TPMSRC(1) | SIM_SOPT2_PLLFLLSEL_MASK);
 	//load the counter and mod
-	TPM2->MOD = 0xFF;
+	TPM2->MOD = MAX_DUTY_CYCLE;
 	//set TPM count direction to up with a divide by 2 prescaler
 	TPM2->SC =  TPM_SC_PS(1);
 	// Continue operation in debug mode

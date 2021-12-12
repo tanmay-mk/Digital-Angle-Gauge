@@ -32,6 +32,7 @@
  * @file    main.c
  * @brief   Application entry point.
  */
+#include <accelerometer.h>
 #include <stdio.h>
 #include "board.h"
 #include "peripherals.h"
@@ -47,6 +48,8 @@
 #include "line_accumulate.h"
 #include "sysclock.h"
 #include "uart.h"
+#include "i2c.h"
+#include "systick.h"
 
 /* TODO: insert other definitions and declarations here. */
 
@@ -68,7 +71,7 @@ int main(void)
     Touch_Init();
     LED_init();
     LED_Color_Config();
-
+    Init_SysTick();
     //initialize clock
     sysclock_init();
     //initialize UART0 with baud rate = 38400
@@ -76,30 +79,19 @@ int main(void)
     //test the cbfifo implementations
     test_cbfifo();
 
-    printf("Welcome to Course Project!\r\n");
+    i2c_init();
+	if (!init_accelerometer())
+	{																			/* init mma peripheral */
+		while (1)																/* not able to initialize mma */
+			;
+	}
+    printf("Welcome to Digital Angle Gauge!\r\n");
+    printf("type help and press enter to know more\n\r");
     printf("? ");
     while (1)
     {
     	accumulate_line();
     }
 
-/*
- 	while (1)
-    {
-//    	int touch = get_tsi_value();
-//    	printf("touch value: %d\n\r", touch);
-
-//    	LED_ON(100,255,100);
-
-    	for (int i=0; i<TOTAL_COLORS; i++)
-    	{
-    		LED_ON(color[i].red_value,color[i].green_value,color[i].blue_value);
-    		for (int j = 0; j<1000; j++)
-    			for (int k=0; k<1000; k++)
-    				;
-    	}
-
-    }
-*/
     //main code here
 }

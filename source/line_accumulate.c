@@ -12,7 +12,7 @@ Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-m
 /*	OTHER FILES TO BE INCLUDED	*/
 #include "line_accumulate.h"
 #include "command_process.h"
-
+#include "touch.h"
 
 void accumulate_line(void)
 {
@@ -27,7 +27,8 @@ void accumulate_line(void)
 		{
 			if(bp==0)
 			{
-
+				//do nothing if bp=0
+				//ignore any more backspaces at this moment
 			}
 			else
 			{
@@ -41,6 +42,7 @@ void accumulate_line(void)
 			buffer[bp] = c;
 			bp++;
 			printf("%c",(char)c);
+			//printf("%d",(int)c);
 		}
 	}
 	buffer[bp] = '\0';
