@@ -16,6 +16,7 @@ Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-m
 #include "led.h"
 #include "accelerometer.h"
 #include "systick.h"
+#include "touch.h"
 
 /*	GENERIC PROTOTYPE FOR HANDLE FUNCTIONS	*/
 typedef void (*cmd_handler_t)(int, char * argv[]);
@@ -29,13 +30,15 @@ typedef struct{
 }cmd_table_t;
 
 int desired_angle = 45;
+int calibrated_angle = 0;
 
 enum commands {
 	author_command,
 	help_command,
 	brightness_command,
 	angle_command,
-	color_command
+	color_command,
+	touch_command
 };
 
 /*	HANDLER FUNCTION PROTOTYPES	*/
@@ -50,13 +53,19 @@ static void angle_handler(int argc, char * argv[]);
 
 static void color_handler(int argc, char * argv[]);
 
+static void touch_handler(int argc, char * argv[]);
+
+static void calibrate_handler(int argc, char * argv[]);
+
 /*	TABLE OF COMMANDS EXECUTED IN RESPONSE TO THE USER INPUT 	*/
 static cmd_table_t commands[] = {
 		{"author",author_handler,"Prints the name of the Author\r\n", BLUE},
 		{"help",help_handler,"Print this help message\r\n", GREEN},
 		{"brightness",brightness_handler,"Adjusts the brightness of the LED. Write 'brightness <percent>'. \n\rFor example, brightness 50 will set the brightness of LED to 50%.\r\n", MAGENTA},
 		{"angle", angle_handler, "Allows user to set a desired angle and then starts blinking the LED until the desired angle is reached. \n\rWrite 'angle <desired angle in degrees>'.\n\r", YELLOW},
-		{"color", color_handler, "TO DO.\n\r", CYAN}
+		{"color", color_handler, "TO DO.\n\r", CYAN},
+		{"touch", touch_handler, "TO DO.\n\r", WHITE},
+		{"calibrate", calibrate_handler, "TO DO.\n\r", WHITE},
 };
 
 static const int cmd_nos = sizeof(commands) / sizeof(cmd_table_t);	//computing number of commands
@@ -142,6 +151,7 @@ void process_command(char *input)
 
 static void brightness_handler(int argc, char * argv[])
 {
+
 	uint32_t factor;
 
 	if (argv[1]==0)
@@ -191,7 +201,7 @@ static void angle_handler(int argc, char * argv[])
 		{
 		   	read_full_xyz();
 		  	convert_xyz_to_roll_pitch();
-		   	angle= fabs(tilt);
+		   	angle= fabs(tilt)-calibrated_angle;
 		   	printf("Angle: %d\n\r", angle);
 		   	LED_ON(commands[angle_command].led_color, brightness);
 		   	delay(75);
@@ -287,4 +297,85 @@ static void color_handler(int argc, char * argv[])
 	 {
 		 printf("Invalid color %s\n\r", color_name);
 	 }
+}
+
+static void touch_handler(int argc, char * argv[])
+{
+	uint32_t variable;
+
+	if (brightness == 1)
+	{
+		variable = 100;
+	}
+	else
+	{
+		variable = -(((brightness - MAX_DUTY_CYCLE)*100)/MAX_DUTY_CYCLE);
+	}
+
+	bool flag = true;
+	while (1)
+	{
+		int touch = get_tsi_value();
+		//printf("touch: %d\n\r", touch);
+		if (touch > 1000)
+		{
+			break;
+		}
+
+		if (touch > 150)
+		{
+			if (variable >= 100)
+			{
+				flag = true;
+				//printf("1\n\r");
+			}
+
+			if (variable <= 50)
+			{
+				flag = false;
+				//printf("2\n\r");
+			}
+
+			if (flag)
+			{
+				variable-=10;
+				//printf("3\n\r");
+			}
+
+			if (!flag)
+			{
+				variable+=10;
+				//printf("4\n\r");
+			}
+			//printf("var: %d\n\r", variable);
+			//delay(100);
+			if (variable == 100)
+			{
+				brightness = 1;
+			}
+			else
+			{
+				brightness = (int) (MAX_DUTY_CYCLE - (variable * MAX_DUTY_CYCLE)/100);
+			}
+			LED_ON(commands[touch_command].led_color, brightness);
+		}
+	}
+}
+
+static void calibrate_handler(int argc, char * argv[])
+{
+	int angle=0;
+
+	if (argv[1]==0)
+	{
+		printf("Too few arguments for brightness command.\n\r");
+		printf("Type help for more information.\n\r");
+		return;
+	}
+
+	else
+	{
+		sscanf(argv[1], "%d", &angle);
+		calibrated_angle = angle;
+	}
 }

@@ -21,6 +21,7 @@
  * 								elapsed since last reset in 1/20 of a second.
  */
 uint32_t timer_interrupt_count=0, systick_count=0;
+static void reset_timer();
 
 void Init_SysTick()
 {
@@ -36,7 +37,7 @@ void SysTick_Handler()
 	systick_count++;
 }
 
-void reset_timer()
+static void reset_timer()
 {
 	systick_count = 0;
 	timer_interrupt_count = 0;

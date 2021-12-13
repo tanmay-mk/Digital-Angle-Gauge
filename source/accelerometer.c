@@ -21,16 +21,6 @@ int init_accelerometer()
 	return 1;
 }
 
-void test_accelerometer()															// Test function to check the MMA 'WHO AM I' register value
-{
-	printf("%s: Testing I2C\n\r", __FUNCTION__);// Verifies the identity of the MMA
-	if(i2c_read_byte(MMA_ADDR, REG_WHOAMI) == WHOAMI)
-	{
-		printf("I2C tested Successfully!\n\r");
-		printf("Accelerometer Initialized Successfully!\n\r");
-	}
-}
-
 void read_full_xyz()
 {
 	int i;

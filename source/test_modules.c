@@ -393,17 +393,56 @@ void test_cbfifo()
 void test_tpm_led()
 {
 	printf("%s: Testing RGB LED by changing PWM duty cycle\n\r", __FUNCTION__);
+
 	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
 	{
-		for (int j = 0; j<MAX_DUTY_CYCLE; j+=0x10)
-		{
-			for (int k = 0; k<MAX_DUTY_CYCLE; k+=0x10)
-			{
-				test_LED_ON(i,j,k);
-				delay(1);
-			}
-		}
+		test_LED_ON(i,0,0);
+		delay(10);
 	}
+	delay(100);
+
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		test_LED_ON(0,i,0);
+		delay(10);
+	}
+	delay(100);
+
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		test_LED_ON(0,0,i);
+		delay(10);
+	}
+	delay(100);
+
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		test_LED_ON(i,0,i);
+		delay(10);
+	}
+	delay(100);
+
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		test_LED_ON(i,i,0);
+		delay(10);
+	}
+	delay(100);
+
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		test_LED_ON(0,i,i);
+		delay(10);
+	}
+	delay(100);
+
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		test_LED_ON(i,i,i);
+		delay(10);
+	}
+	delay(100);
+
 }
 
 void self_test_accelerometer()													// Testing function to verify the output thrown by the accelerometer
@@ -469,4 +508,14 @@ static void self_test_accelerometer_mode(int mode)
 		delay(5);
 	}
 
+}
+
+void test_accelerometer()															// Test function to check the MMA 'WHO AM I' register value
+{
+	printf("%s: Testing I2C\n\r", __FUNCTION__);// Verifies the identity of the MMA
+	if(i2c_read_byte(MMA_ADDR, REG_WHOAMI) == WHOAMI)
+	{
+		printf("I2C tested Successfully!\n\r");
+		printf("Accelerometer Initialized Successfully!\n\r");
+	}
 }
