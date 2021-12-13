@@ -38,6 +38,7 @@ void LED_Color_Config()
 	color[CYAN].red_value 			= 0x00;
 	color[CYAN].green_value 		= 0xFF;
 	color[CYAN].blue_value 			= 0xFF;
+
 }
 
 
@@ -163,4 +164,11 @@ void LED_OFF(void)
 		TPM2->CONTROLS[0].CnV = 0;
 		TPM2->CONTROLS[1].CnV = 0;
 		TPM0->CONTROLS[1].CnV = 0;
+}
+
+void test_LED_ON(uint32_t red_value, uint32_t green_value, uint32_t blue_value)
+{
+		TPM2->CONTROLS[0].CnV = red_value;
+		TPM2->CONTROLS[1].CnV = green_value;
+		TPM0->CONTROLS[1].CnV = blue_value;
 }

@@ -1,9 +1,3 @@
-/*********************************************************************************************
- * PES Assignment 4
- * File Name: pwm.h
- * Author: Alexander G. Dean
- * GitHub Link:https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_7/PWM_LED/Source/timers.c
- ********************************************************************************************/
 #ifndef _LED_H_
 #define _LED_H_
 
@@ -44,24 +38,9 @@ extern color_config color[TOTAL_COLORS];
 extern int brightness;
 
 void LED_init();
-
 void LED_OFF(void);
 void LED_Color_Config();
-
-/*
- * @brief: 					Turns on LED with specific RGB value.
- *
- * @parameters:
- * 			red_value:		Turns ON the LED with a specific duty cycle
- * 							for RED color.
- * 			green_value: 	Turns ON the LED with a specific duty cycle
- * 							for GREEN color.
- * 			blue_value:		Turns ON the LED with a specific duty cycle
- * 							for BLUE color.
- *
- * @returns: 				None.
- */
 void LED_ON(uint32_t color_name, int brightness);
-
+void test_LED_ON(uint32_t red_value, uint32_t green_value, uint32_t blue_value);
 
 #endif /*_LED_H_*/

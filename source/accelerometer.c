@@ -1,17 +1,16 @@
 
-#include <accelerometer.h>
+#include "accelerometer.h"
 #include <MKL25Z4.H>
 #include "i2c.h"
 #include <math.h>
 #include <stdio.h>
 #include "fsl_debug_console.h"
+#include "systick.h"
+
 int16_t acc_X=0, acc_Y=0, acc_Z=0;
 float tilt=0.0, tilt_value=0.0;
 
-//mma data ready
 extern uint32_t DATA_READY;
-
-
 
 //initializes mma8451 sensor
 //i2c has to already be enabled
@@ -20,6 +19,16 @@ int init_accelerometer()
 	//set active mode, 14 bit samples and 800 Hz ODR
 	i2c_write_byte(MMA_ADDR, REG_CTRL1, 0x01);
 	return 1;
+}
+
+void test_accelerometer()															// Test function to check the MMA 'WHO AM I' register value
+{
+	printf("%s: Testing I2C\n\r", __FUNCTION__);// Verifies the identity of the MMA
+	if(i2c_read_byte(MMA_ADDR, REG_WHOAMI) == WHOAMI)
+	{
+		printf("I2C tested Successfully!\n\r");
+		printf("Accelerometer Initialized Successfully!\n\r");
+	}
 }
 
 void read_full_xyz()
@@ -58,11 +67,6 @@ void read_full_xyz()
 	{
 		acc_Z = acc_Z*(-1);
 	}
-	//printf("x = %d, y = %d, z = %d \n\r",acc_X,acc_Y,acc_Z);
-//	int red = acc_X * 255/4096;
-//	int green = acc_Y * 255/4096;
-//	int blue = acc_Z * 255/4096;
-//	rgb_set(red, green, blue);
 }
 
 
@@ -83,9 +87,5 @@ void convert_xyz_to_roll_pitch(void) {
 
 	tilt_value= (az / sqrt(ax*ax + ay*ay + az*az));
 	tilt= acos(tilt_value)* 180/M_PI;
-
-//	roll 	= atan2(ay, az)*180/M_PI;
-//	pitch 	= atan2(ax, sqrt(ay*ay + az*az))*180/M_PI;
-
 }
 

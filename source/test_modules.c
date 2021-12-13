@@ -9,11 +9,20 @@
 #include <assert.h>
 #include <string.h>
 
-#include "test_cbfifo.h"
+#include "test_modules.h"
 #include "cbfifo.h"
+#include "led.h"
+#include "systick.h"
+#include "i2c.h"
+#include "accelerometer.h"
+
+static void self_test_accelerometer_mode(int mode);
 
 void test_cbfifo()
 {
+    cbfifo_reset(TRANSMIT);
+  	cbfifo_reset(RECEIVE);
+
   char *str ="To be, or not to be: that is the question:\n"
     "Whether 'tis nobler in the mind to suffer\n"
     "The slings and arrows of outrageous fortune,\n"
@@ -381,3 +390,83 @@ void test_cbfifo()
   printf("%s: Transmit: passed all test cases\n\r%s: Receive: passed all test cases\n\r", __FUNCTION__);
 }
 
+void test_tpm_led()
+{
+	printf("%s: Testing RGB LED by changing PWM duty cycle\n\r", __FUNCTION__);
+	for (int i = 0; i<MAX_DUTY_CYCLE; i+=0x10)
+	{
+		for (int j = 0; j<MAX_DUTY_CYCLE; j+=0x10)
+		{
+			for (int k = 0; k<MAX_DUTY_CYCLE; k+=0x10)
+			{
+				test_LED_ON(i,j,k);
+				delay(1);
+			}
+		}
+	}
+}
+
+void self_test_accelerometer()													// Testing function to verify the output thrown by the accelerometer
+{
+	printf("Testing Accelerometer Readings: \n\r");
+	int x_test[10], y_test[10], z_test[10];
+	int x_sum=0, y_sum=0, z_sum=0;
+	for(int i=0;i<10;i++)											// Taking 10 samples to verify our output
+	{
+		self_test_accelerometer_mode(ON);											// Switching on SELF test mode and storing values
+		read_full_xyz();
+		x_test[i]=acc_X;
+		y_test[i]=acc_Y;
+		z_test[i]=acc_Z;
+
+		//printf("ON:\n\rX test: %d, Y test: %d, Z test: %d\n\r",x_test[i],y_test[i],z_test[i]);
+		//printf("X: %d, Y: %d, Z: %d\n\r\n\r",acc_X,acc_Y,acc_Z);
+
+		self_test_accelerometer_mode(OFF);										// Switching off the SELF test mode and storing values
+		read_full_xyz();
+		x_test[i]-=acc_X;											// Calculating the difference between the 2 modes
+		y_test[i]-=acc_Y;
+		z_test[i]-=acc_Z;
+
+		//printf("OFF:\n\rX test: %d, Y test: %d, Z test: %d\n\r",x_test[i],y_test[i],z_test[i]);
+		//printf("X: %d, Y: %d, Z: %d\n\r\n\r",acc_X,acc_Y,acc_Z);
+
+		x_sum+=x_test[i];											// To calculate the average, finding their sum
+		y_sum+=y_test[i];
+		z_sum+=z_test[i];
+
+		//printf("Xsum: %d, Ysum: %d, Zsum: %d\n\r\n\r",x_sum,y_sum,z_sum);
+	}
+	//printf("Xsum: %d, Ysum: %d, Zsum: %d\n\r\n\r",x_sum,y_sum,z_sum);
+	if((x_sum/10 > X_REFERENCE) && (y_sum/10 > Y_REFERENCE) && (z_sum/10 > Z_REFERENCE))			// checking the average with the reference values
+	{
+		printf("Accelerometer Readings Verified Successfully!!!\n\r");
+	}
+	else
+	{
+		printf("Accelerometer Readings Verification FAILED\n\r");
+	}
+}
+
+static void self_test_accelerometer_mode(int mode)
+{
+	if(mode == ON)
+	{
+		i2c_write_byte(MMA_ADDR, REG_CTRL1, 0x00);		// Putting into standby mode by clearing the active bit in REG_CTRL1
+		delay(5);										// Delay given to give time for the I2c values to set
+		i2c_write_byte(MMA_ADDR, REG_CTRL2, 0x80);		// Putting into Self_test mode by setting the ST bit as 1 in REG_CTRL2
+		delay(5);										// Delay given to give time for the I2c values to set
+		i2c_write_byte(MMA_ADDR, REG_CTRL1, 0x01);		// Putting into Active mode by setting the Active bit as 1 in REG_CTRL1
+		delay(5);
+	}
+	else if(mode == OFF)
+	{
+		i2c_write_byte(MMA_ADDR, REG_CTRL1, 0x00);		// Putting into standby mode by clearing the active bit in REG_CTRL1
+		delay(5);										// Delay given to give time for the I2c values to set
+		i2c_write_byte(MMA_ADDR, REG_CTRL2, 0x00);		// Getting out of the Self test mode by clearing the ST bit in REG_CTRL2
+		delay(5);										// Delay given to give time for the I2c values to set
+		i2c_write_byte(MMA_ADDR, REG_CTRL1, 0x01);		// Going back to the Active mode by setting the active bit to 1 in REG_CTRL1
+		delay(5);
+	}
+
+}

@@ -15,7 +15,7 @@ C_SRCS += \
 ../source/semihost_hardfault.c \
 ../source/sysclock.c \
 ../source/systick.c \
-../source/test_cbfifo.c \
+../source/test_modules.c \
 ../source/touch.c \
 ../source/uart.c 
 
@@ -31,7 +31,7 @@ OBJS += \
 ./source/semihost_hardfault.o \
 ./source/sysclock.o \
 ./source/systick.o \
-./source/test_cbfifo.o \
+./source/test_modules.o \
 ./source/touch.o \
 ./source/uart.o 
 
@@ -47,7 +47,7 @@ C_DEPS += \
 ./source/semihost_hardfault.d \
 ./source/sysclock.d \
 ./source/systick.d \
-./source/test_cbfifo.d \
+./source/test_modules.d \
 ./source/touch.d \
 ./source/uart.d 
 

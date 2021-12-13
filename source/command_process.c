@@ -40,32 +40,10 @@ enum commands {
 
 /*	HANDLER FUNCTION PROTOTYPES	*/
 
-/*
- * @brief: 		this function is called when user types
- * 				"author" in the command terminal.
- *
- * @returns: 	none
- */
 static void author_handler	(int argc, char * argv[]);
 
-/*
- * @brief: 		this function is called when user types
- * 				"help" in the command terminal. Prints
- * 				the brief of all the commands available
- * 				to the user.
- *
- * @returns: 	none
- */
 static void help_handler	(int argc, char * argv[]);
 
-/*
- * @brief: 		this function is called when user types
- * 				"help" in the command terminal. Prints
- * 				the brief of all the commands available
- * 				to the user.
- *
- * @returns: 	none
- */
 static void brightness_handler	(int argc, char * argv[]);
 
 static void angle_handler(int argc, char * argv[]);
@@ -77,7 +55,7 @@ static cmd_table_t commands[] = {
 		{"author",author_handler,"Prints the name of the Author\r\n", BLUE},
 		{"help",help_handler,"Print this help message\r\n", GREEN},
 		{"brightness",brightness_handler,"Adjusts the brightness of the LED. Write 'brightness <percent>'. \n\rFor example, brightness 50 will set the brightness of LED to 50%.\r\n", MAGENTA},
-		{"angle", angle_handler, "Allows user to set a desired angle and then starts blinking the LED until the desired angle is reached. \n\rWrite 'angle <desired angle in degrees>'.\n\r\n\r", YELLOW},
+		{"angle", angle_handler, "Allows user to set a desired angle and then starts blinking the LED until the desired angle is reached. \n\rWrite 'angle <desired angle in degrees>'.\n\r", YELLOW},
 		{"color", color_handler, "TO DO.\n\r", CYAN}
 };
 
@@ -157,6 +135,7 @@ void process_command(char *input)
 	  }
 	 if(!command)
 	 {
+		 LED_ON(RED, brightness);
 		 printf("Invalid command: %s\r\n",argv[0]);
 	 }
 }
@@ -252,9 +231,9 @@ static void help_handler(int argc,char * argv[])
 
 static void color_handler(int argc, char * argv[])
 {
+	LED_ON(commands[color_command].led_color, brightness);
 	bool command = false;
 	char color_name[10];
-	uint32_t color_id = TOTAL_COLORS;
 	uint32_t instruction_id = 0xFF;
 
 	sscanf(argv[2], "%s", color_name);
@@ -276,64 +255,36 @@ static void color_handler(int argc, char * argv[])
 
 	 if (strcasecmp(color_name, "blue")==0)
 	 {
-		 color_id = BLUE;
+		 commands[instruction_id].led_color = BLUE;
 	 }
 
 	 else if (strcasecmp(color_name, "green")==0)
 	 {
-		 color_id = GREEN;
+		 commands[instruction_id].led_color = GREEN;
 	 }
 
 	 else if (strcasecmp(color_name, "yellow")==0)
 	 {
-		 color_id = YELLOW;
+		 commands[instruction_id].led_color = YELLOW;
 	 }
 
 	 else if (strcasecmp(color_name, "magenta")==0)
 	 {
-		 color_id = MAGENTA;
+		 commands[instruction_id].led_color = MAGENTA;
 	 }
 
 	 else if (strcasecmp(color_name, "cyan")==0)
 	 {
-		 color_id = CYAN;
+		 commands[instruction_id].led_color = CYAN;
 	 }
 
 	 else if (strcasecmp(color_name, "white")==0)
 	 {
-		 color_id = WHITE;
+		 commands[instruction_id].led_color = WHITE;
 	 }
 
 	 else
 	 {
 		 printf("Invalid color %s\n\r", color_name);
-	 }
-
-	 switch (color_id)
-	 {
-
-	 	 case BLUE:
-	 		commands[instruction_id].led_color = BLUE;
-	 		break;
-
-	 	 case GREEN:
-	 		commands[instruction_id].led_color = GREEN;
-	 		break;
-
-	 	 case YELLOW:
-	 		commands[instruction_id].led_color = YELLOW;
-	 		break;
-
-	 	 case WHITE:
-	 		commands[instruction_id].led_color = WHITE;
-	 		break;
-
-	 	 case MAGENTA:
-	 		commands[instruction_id].led_color = MAGENTA;
-	 		break;
-
-	 	 case CYAN:
-	 		commands[instruction_id].led_color = CYAN;
-	 		break;
 	 }
 }

@@ -36,24 +36,9 @@ void SysTick_Handler()
 	systick_count++;
 }
 
-ticktime_t now()
-{
-	return systick_count;
-}
-
-ticktime_t get_timer()
-{
-	return timer_interrupt_count;
-}
-
 void reset_timer()
 {
 	systick_count = 0;
-	timer_interrupt_count = 0;
-}
-
-void reset_count()
-{
 	timer_interrupt_count = 0;
 }
 

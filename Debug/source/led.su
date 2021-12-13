@@ -1,7 +1,8 @@
 led.c:12:6:LED_Color_Config	8	static
-led.c:75:13:Init_Blue_LED_PWM	8	static
-led.c:99:13:Init_Red_LED_PWM	8	static
-led.c:123:13:Init_Green_LED_PWM	8	static
-led.c:147:6:LED_init	8	static
-led.c:154:6:LED_ON	24	static
-led.c:161:6:LED_OFF	8	static
+led.c:76:13:Init_Blue_LED_PWM	8	static
+led.c:100:13:Init_Red_LED_PWM	8	static
+led.c:124:13:Init_Green_LED_PWM	8	static
+led.c:148:6:LED_init	8	static
+led.c:155:6:LED_ON	24	static
+led.c:162:6:LED_OFF	8	static
+led.c:169:6:test_LED_ON	24	static
