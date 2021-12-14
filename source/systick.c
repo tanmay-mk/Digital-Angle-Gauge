@@ -1,16 +1,19 @@
-/*********************************************************************************************
- * PES Assignment 4
- * File Name: systick.c
- * Author: Tanmay Mahendra Kothale (tanmay.kothale@colorado.edu) (GitHub: tanmay-mk)
- ********************************************************************************************/
 /*
- * OTHER FILES TO BE INCLUDED
+ * PES Course Project
+ *
+ * File Name	: systick.h
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
  */
+
+/*	OTHER FILES TO BE INCLUDED	*/
 #include "systick.h"
 
-/*
- * GLOBAL VARIABLES
- */
+/* GLOBAL VARIABLES */
 
 /*
  * @brief:
@@ -21,11 +24,19 @@
  * 								elapsed since last reset in 1/20 of a second.
  */
 uint32_t timer_interrupt_count=0, systick_count=0;
+
+/*
+ * @brief: resets the timer
+ *
+ * @parameters: none
+ *
+ * @returns: none
+ */
 static void reset_timer();
 
 void Init_SysTick()
 {
-	SysTick->LOAD = ONE_MILLISECOND;  	//initialize systick with top value corresponding to 50mSec
+	SysTick->LOAD = ONE_MILLISECOND;  	//initialize systick with top value corresponding to 1mSec
 	NVIC_SetPriority (SysTick_IRQn, 3);		//set interrupt priority to 3
 	SysTick->VAL = 0;						//force the systick counter to reload
 	SysTick->CTRL = SysTick_CTRL_TICKINT_Msk | SysTick_CTRL_ENABLE_Msk;

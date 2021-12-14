@@ -1,2 +1,2 @@
-touch.c:12:6:Touch_Init	8	static
-touch.c:25:10:get_tsi_value	16	static
+touch.c:19:6:Touch_Init	8	static
+touch.c:32:10:get_tsi_value	16	static

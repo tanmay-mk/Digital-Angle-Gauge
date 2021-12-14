@@ -1,8 +1,14 @@
-/************************************************************************************************
-PES Assignment 6
-File Name: cbfifo.c
-Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-mk
-*************************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: cbfifo.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 					tanmay.kothale@colorado.edu
+ * 					GitHub : tanmay-mk
+ *
+ * Date			: November 12, 2021
+ */
 
 /*	LIBRARY FILES	*/
 #include <stdlib.h>

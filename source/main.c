@@ -71,12 +71,12 @@ int main(void)
 #endif
 
     init_peripherals();
-    //test the cbfifo implementations
     test_modules();
 
     printf("Welcome to Digital Angle Gauge!\r\n");
     printf("\n\rtype help and press enter to know more\n\r");
     printf("? ");
+
     while (1)
     {
     	accumulate_line();

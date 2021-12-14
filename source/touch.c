@@ -1,9 +1,16 @@
-/*********************************************************************************************
- * PES Assignment 4
- * File Name: touch.c
- * Author: Alexander G. Dean
- * Github Link:https://github.com/alexander-g-dean/ESF/tree/master/NXP/Misc/Touch%20Sense.
- ********************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: touch.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ *
+ * References	: Alexander G. Dean, https://github.com/alexander-g-dean/ESF/tree/master/NXP/Misc/Touch%20Sense
+ */
 
 #include <stdio.h>
 

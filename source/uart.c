@@ -1,9 +1,16 @@
-/************************************************************************************************
-PES Assignment 6
-File Name: uart.c
-Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-mk
-		Alexander G. Dean
-*************************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: uart.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ *
+ * References	: Alexander G. Dean, https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8/Serial-Demo/src/UART.c
+ */
 
 /*	LIBRARY FILES	*/
 #include <MKL25Z4.h>
@@ -11,7 +18,8 @@ Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-m
 /*	OTHER FILES TO BE INCLUDED	*/
 #include "uart.h"
 
-void Init_UART0(uint32_t baud_rate) {
+void Init_UART0(uint32_t baud_rate)
+{
 	uint16_t sbr;
 	uint8_t temp;
 
@@ -80,7 +88,8 @@ void Init_UART0(uint32_t baud_rate) {
  *
  * @returns: none
  */
-void UART0_IRQHandler(void) {
+void UART0_IRQHandler(void)
+{
 
 	uint8_t ch;
 	uint8_t ch_tx;
@@ -119,7 +128,8 @@ void UART0_IRQHandler(void) {
  *
  * @returns: none
  */
-int __sys_write(int handle, char * buf, int size){
+int __sys_write(int handle, char * buf, int size)
+{
 
 	while(cbfifo_length(TRANSMIT) == cbfifo_capacity(TRANSMIT))
 		;
@@ -138,14 +148,15 @@ int __sys_write(int handle, char * buf, int size){
 }
 
 /*
- * @brief: This function gets called everytime there is
+ * @brief: This function gets called every time there is
  * 			a call to getchar or equivalent function
  *
  * @parameters: none
  *
  * @returns: none
  */
-int __sys_readc(void){
+int __sys_readc(void)
+{
 
 	int character;
 

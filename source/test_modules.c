@@ -1,14 +1,21 @@
 /*
- * test_cbfifo.c - test the cbfifo implementation
+ * PES Course Project
  *
- * Author: Howdy Pierce, howdy.pierce@colorado.edu
+ * File Name	: test_modules.c
  *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
  */
 
+/*	LIBRARY FILES	*/
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
 
+/*	OTHER FILES TO BE INCLUDED	*/
 #include "test_modules.h"
 #include "cbfifo.h"
 #include "led.h"
@@ -16,8 +23,19 @@
 #include "i2c.h"
 #include "accelerometer.h"
 
+/*
+ * @brief		: Function to switch on and off the self test mode of the MMA
+ *
+ * @parameters	: none
+ *
+ * @returns		: none
+ */
 static void self_test_accelerometer_mode(int mode);
 
+/*
+ * Following test cases for cbfifo are taken from a test suite
+ * designed by Howdy Pierce. (Howdy.Pierce@colorado.edu)
+ */
 void test_cbfifo()
 {
     cbfifo_reset(TRANSMIT);
@@ -453,7 +471,7 @@ void self_test_accelerometer()													// Testing function to verify the out
 	for(int i=0;i<10;i++)											// Taking 10 samples to verify our output
 	{
 		self_test_accelerometer_mode(ON);											// Switching on SELF test mode and storing values
-		read_full_xyz();
+		compute_axes();
 		x_test[i]=acc_X;
 		y_test[i]=acc_Y;
 		z_test[i]=acc_Z;
@@ -462,7 +480,7 @@ void self_test_accelerometer()													// Testing function to verify the out
 		//printf("X: %d, Y: %d, Z: %d\n\r\n\r",acc_X,acc_Y,acc_Z);
 
 		self_test_accelerometer_mode(OFF);										// Switching off the SELF test mode and storing values
-		read_full_xyz();
+		compute_axes();
 		x_test[i]-=acc_X;											// Calculating the difference between the 2 modes
 		y_test[i]-=acc_Y;
 		z_test[i]-=acc_Z;

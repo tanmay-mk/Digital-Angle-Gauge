@@ -1,12 +1,27 @@
+/*
+ * PES Course Project
+ *
+ * File Name	: accelerometer.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 					tanmay.kothale@colorado.edu
+ * 					GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ */
 
-#include "accelerometer.h"
-#include <MKL25Z4.H>
-#include "i2c.h"
+/*	LIBRARY FILES	*/
 #include <math.h>
 #include <stdio.h>
 #include "fsl_debug_console.h"
+#include <MKL25Z4.H>
+
+/*	OTHER FILES TO BE INCLUDED	*/
+#include "i2c.h"
+#include "accelerometer.h"
 #include "systick.h"
 
+/*	GLOBAL VARIABLES	*/
 int16_t acc_X=0, acc_Y=0, acc_Z=0;
 float tilt=0.0, tilt_value=0.0;
 
@@ -21,7 +36,7 @@ int init_accelerometer()
 	return 1;
 }
 
-void read_full_xyz()
+void compute_axes()
 {
 	int i;
 	uint8_t data[6];
@@ -59,18 +74,7 @@ void read_full_xyz()
 	}
 }
 
-
-void read_xyz(void)
-{
-	// sign extend byte to 16 bits - need to cast to signed since function
-	// returns uint8_t which is unsigned
-	acc_X = (int8_t) i2c_read_byte(MMA_ADDR, REG_XHI);
-	acc_Y = (int8_t) i2c_read_byte(MMA_ADDR, REG_YHI);
-	acc_Z = (int8_t) i2c_read_byte(MMA_ADDR, REG_ZHI);
-
-}
-
-void convert_xyz_to_roll_pitch(void) {
+void convert_axes_to_tilt(void) {
 	float ax = acc_X/COUNTS_PER_G,
 		  ay = acc_Y/COUNTS_PER_G,
 		  az = acc_Z/COUNTS_PER_G;
@@ -79,3 +83,4 @@ void convert_xyz_to_roll_pitch(void) {
 	tilt= acos(tilt_value)* 180/M_PI;
 }
 
+/*EOF*/

@@ -1,13 +1,18 @@
-/*********************************************************************************************
- * PES Assignment 4
- * File Name: pwm.h
- * Author: Alexander G. Dean
- * GitHub Link:https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_7/PWM_LED/Source/timers.c
- ********************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: led.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ */
 #include "led.h"
 
 color_config color[TOTAL_COLORS] = {0};
-int brightness = 1;
+int brightness = 100;
 
 void LED_Color_Config()
 {
@@ -39,6 +44,17 @@ void LED_Color_Config()
 	color[CYAN].green_value 		= 0xFF;
 	color[CYAN].blue_value 			= 0xFF;
 
+	color[NEON].red_value 			= 0x70;
+	color[NEON].green_value 		= 0xFF;
+	color[NEON].blue_value 			= 0x07;
+
+	color[SKY_BLUE].red_value 		= 0x07;
+	color[SKY_BLUE].green_value 	= 0x70;
+	color[SKY_BLUE].blue_value 		= 0xFF;
+
+	color[PINK].red_value 		= 0xFF;
+	color[PINK].green_value 	= 0x70;
+	color[PINK].blue_value 		= 0xFF;
 }
 
 
@@ -152,11 +168,41 @@ void LED_init()
 	Init_Red_LED_PWM();
 }
 
-void LED_ON(uint32_t color_name, int brightness)
+void LED_ON(uint32_t color_name, int factor)
 {
-		TPM2->CONTROLS[0].CnV = color[color_name].red_value/brightness;
-		TPM2->CONTROLS[1].CnV = color[color_name].green_value/brightness;
-		TPM0->CONTROLS[1].CnV = color[color_name].blue_value/brightness;
+	uint32_t red_value, green_value, blue_value;
+
+	if (color[color_name].red_value == 0)
+	{
+		red_value = 0;
+	}
+	else
+	{
+		red_value = (factor*color[color_name].red_value)/100;
+	}
+
+	if (color[color_name].green_value == 0)
+	{
+		green_value = 0;
+	}
+	else
+	{
+		green_value = (factor*color[color_name].green_value)/100;
+	}
+
+	if (color[color_name].blue_value == 0)
+	{
+		blue_value = 0;
+	}
+	else
+	{
+		blue_value = (factor*color[color_name].blue_value)/100;
+	}
+
+	//printf("r: %d g: %d, b: %d\n\r", red_value, green_value, blue_value);
+		TPM2->CONTROLS[0].CnV = red_value;
+		TPM2->CONTROLS[1].CnV = green_value;
+		TPM0->CONTROLS[1].CnV = blue_value;
 }
 
 void LED_OFF(void)

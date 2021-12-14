@@ -1,9 +1,16 @@
-/*******************************************************************************************
+/*
  * PES Course Project
- * File Name: touch.h
- * Author: Alexander G. Dean
- * Github Link:https://github.com/alexander-g-dean/ESF/tree/master/NXP/Misc/Touch%20Sense.
- *******************************************************************************************/
+ *
+ * File Name	: touch.h
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ *
+ * References	: Alexander G. Dean, https://github.com/alexander-g-dean/ESF/tree/master/NXP/Misc/Touch%20Sense
+ */
 
 #ifndef _TOUCH_H_
 #define _TOUCH_H_

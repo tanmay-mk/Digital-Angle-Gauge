@@ -1,9 +1,15 @@
-/************************************************************************************************
-PES Assignment 6
-File Name: command_process.c
-Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-mk
-		Howdy Pierce - howdy.pierce@colorado.edu
-*************************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: command_process.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 					tanmay.kothale@colorado.edu
+ * 					GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ */
+
 
 /* 	LIBRARY FILES	*/
 #include <stdio.h>
@@ -11,6 +17,7 @@ Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-m
 #include <string.h>
 #include <stdbool.h>
 #include <math.h>
+
 /* 	OTHER FILES TO BE INCLUDED	*/
 #include "command_process.h"
 #include "led.h"
@@ -38,7 +45,8 @@ enum commands {
 	brightness_command,
 	angle_command,
 	color_command,
-	touch_command
+	touch_command,
+	calibrate_command
 };
 
 /*	HANDLER FUNCTION PROTOTYPES	*/
@@ -59,13 +67,22 @@ static void calibrate_handler(int argc, char * argv[]);
 
 /*	TABLE OF COMMANDS EXECUTED IN RESPONSE TO THE USER INPUT 	*/
 static cmd_table_t commands[] = {
-		{"author",author_handler,"Prints the name of the Author\r\n", BLUE},
-		{"help",help_handler,"Print this help message\r\n", GREEN},
-		{"brightness",brightness_handler,"Adjusts the brightness of the LED. Write 'brightness <percent>'. \n\rFor example, brightness 50 will set the brightness of LED to 50%.\r\n", MAGENTA},
-		{"angle", angle_handler, "Allows user to set a desired angle and then starts blinking the LED until the desired angle is reached. \n\rWrite 'angle <desired angle in degrees>'.\n\r", YELLOW},
-		{"color", color_handler, "TO DO.\n\r", CYAN},
-		{"touch", touch_handler, "TO DO.\n\r", WHITE},
-		{"calibrate", calibrate_handler, "TO DO.\n\r", WHITE},
+		{"author",author_handler,"Prints the name of the Author\r\n", CYAN},
+		{"help",help_handler,"Print this help message\r\n", NEON},
+		{"brightness",brightness_handler,"Adjusts the brightness of the LED. Write 'brightness <percent>'. \n\r"						\
+				"For example, brightness 50 will set the brightness of LED to 50%.\r\n", SKY_BLUE},
+		{"angle", angle_handler, "Allows user to set a desired angle and then starts blinking the\n\r"									\
+				"LED until the desired angle is reached. \n\rWrite 'angle <desired angle in degrees>'.\n\r", YELLOW},
+		{"color", color_handler, "Allows you to change the LED color assigned to a specific instruction.\n\rAvailable colors are:\n\r"	\
+				"color\t\tcodeword\n\rblue\t\tblue\n\rgreen\t\tgreen\n\ryellow\t\tyellow\n\rcyan\t\tcyan\n\rneon\t\tneon\n\r"			\
+				"magenta\t\tmagenta\n\rsky blue\tskyblue\n\rpink\t\tpink\n\rwhite\t\twhite\n\r\n\r"									\
+				"write 'color <instruction> <color code>'\n\r", MAGENTA},
+		{"touch", touch_handler, "Allows user to adjust the brightness of the LED using the touch sensor\n\r"							\
+				"If the brightness of the LED is greater than 0, first, the brightness will gradually decrease\n\r"						\
+				"by 10%% and then once the brightness is 0 (LED OFF), the LED will start glowing again gradually\n\r"					\
+				"with increase of 10%% in brightness. type 'touch' and then tap until your intended brightness is\n\r"					\
+				"achieved. To exit the command, press the TSI sensor a bit harder.", BLUE},
+		{"calibrate", calibrate_handler, "TO DO.\n\r", GREEN},
 };
 
 static const int cmd_nos = sizeof(commands) / sizeof(cmd_table_t);	//computing number of commands
@@ -83,54 +100,55 @@ void process_command(char *input)
 	char *end;
 
 	for(end=input ; *end!= '\0' ; end++)		//computing the end of the string
-		;
+				;
 	memset(argv,0,sizeof(argv)); 				//setting argv[] to 0
 
-	for(p = input; p < end; p++){
+	for(p = input; p < end; p++)
+	{
+		switch(in_token)
+		{
+			case false:
 
-		switch(in_token){
+				/*
+				 * @brief: if the token state is false, we check for a valid character
+				 * 			if we find a valid character, we look for first available white space,
+				 * 			LF, CR or TAB.
+				 */
+				if(
+						((*p>='a')&&(*p<='z')) ||
+						((*p>='A')&&(*p<='Z')) ||
+						((*p>='0')&&(*p<='9'))
+				  )
+				{
+					argv[argc] = p;		//storing the word in argv
+					argc++;				//incrementing argc index
+					in_token = true;	//advance to next state
+				}
 
-		case false:
+			break;
+			case true:
 
-			/*
-			 * @brief: if the token state is false, we check for a valid character
-			 * 			if we find a valid character, we look for first available white space,
-			 * 			LF, CR or TAB.
-			 */
-			if(
-					((*p>='a')&&(*p<='z')) ||
-					((*p>='A')&&(*p<='Z')) ||
-					((*p>='0')&&(*p<='9'))
-			  )
-			{
-				argv[argc] = p;		//storing the word in argv
-				argc++;				//incrementing argc index
-				in_token = true;	//advance to next state
-			}
+				/*
+				 * @brief: in this state, we check for the first available white space,
+				 * 			LF, CR, TAB, and then replace the character with null character.
+				 */
+				if(
+						(*p == ' ')  ||
+						(*p == '\t') ||
+						(*p == '\n') ||
+						(*p == '\r')
+				  )
+				{
+					*p = '\0';
+					in_token = false;		//advance to previous state
+				}
 
-		break;
-		case true:
-
-			/*
-			 * @brief: in this state, we check for the first available white space,
-			 * 			LF, CR, TAB, and then replace the character with null character.
-			 */
-			if(
-					(*p == ' ')  ||
-					(*p == '\t') ||
-					(*p == '\n') ||
-					(*p == '\r')
-			  )
-			{
-				*p = '\0';
-				in_token = false;		//advance to previous state
-			}
-
-		break;
+			break;
 		}
 	}
-	if(argc == 0){//no command found
-		return;
+	if(argc == 0)
+	{
+		return;		//no command found
 	}
 
 	//Todo:Handle the command
@@ -164,26 +182,14 @@ static void brightness_handler(int argc, char * argv[])
 	else
 	{
 		sscanf(argv[1], "%d", &factor);
-
-		if (factor == 100)
-		{
-			brightness = 1;
-		}
-		else if (factor == 0)
-		{
-			brightness = MAX_DUTY_CYCLE;
-		}
-		else
-		{
-			brightness = (int) (MAX_DUTY_CYCLE - (factor * MAX_DUTY_CYCLE)/100);
-		}
+		brightness = factor;
+		printf("Set the brightness of LED to %d%%\n\r", brightness);
 		LED_ON(commands[brightness_command].led_color, brightness);
 	}
 }
 
 static void angle_handler(int argc, char * argv[])
 {
-
 	uint32_t user_angle;
 	int angle=0;
 
@@ -199,9 +205,10 @@ static void angle_handler(int argc, char * argv[])
 		desired_angle = user_angle;
 		while (1)
 		{
-		   	read_full_xyz();
-		  	convert_xyz_to_roll_pitch();
-		   	angle= fabs(tilt)-calibrated_angle;
+		   	compute_axes();
+		  	convert_axes_to_tilt();
+		   	angle = fabs(tilt)-calibrated_angle;
+		    angle = (angle<0)? angle*-1 : angle;
 		   	printf("Angle: %d\n\r", angle);
 		   	LED_ON(commands[angle_command].led_color, brightness);
 		   	delay(75);
@@ -215,7 +222,6 @@ static void angle_handler(int argc, char * argv[])
 		   	}
 		}
 	}
-
 }
 
 static void author_handler(int argc, char * argv[])
@@ -227,16 +233,24 @@ static void author_handler(int argc, char * argv[])
 static void help_handler(int argc,char * argv[])
 {
 	LED_ON(commands[help_command].led_color, brightness);
+
 	printf("1. author\r\n");
 	printf("%s\n\r",commands[author_command].help_string);
+
 	printf("2. help\r\n");
 	printf("%s\n\r",commands[help_command].help_string);
+
 	printf("3. brightness\r\n");
 	printf("%s\n\r",commands[brightness_command].help_string);
+
 	printf("4. angle\r\n");
 	printf("%s\n\r",commands[angle_command].help_string);
+
 	printf("5. color\r\n");
 	printf("%s\n\r",commands[color_command].help_string);
+
+	printf("6. color\r\n");
+	printf("%s\n\r",commands[calibrate_command].help_string);
 }
 
 static void color_handler(int argc, char * argv[])
@@ -293,6 +307,21 @@ static void color_handler(int argc, char * argv[])
 		 commands[instruction_id].led_color = WHITE;
 	 }
 
+	 else if (strcasecmp(color_name, "neon")==0)
+	 {
+		 commands[instruction_id].led_color = NEON;
+	 }
+
+	 else if (strcasecmp(color_name, "pink")==0)
+	 {
+		 commands[instruction_id].led_color = PINK;
+	 }
+
+	 else if (strcasecmp(color_name, "skyblue")==0)
+	 {
+		 commands[instruction_id].led_color = SKY_BLUE;
+	 }
+
 	 else
 	 {
 		 printf("Invalid color %s\n\r", color_name);
@@ -301,63 +330,46 @@ static void color_handler(int argc, char * argv[])
 
 static void touch_handler(int argc, char * argv[])
 {
+	LED_ON(commands[touch_command].led_color, brightness);
 	uint32_t variable;
 
-	if (brightness == 1)
-	{
-		variable = 100;
-	}
-	else
-	{
-		variable = -(((brightness - MAX_DUTY_CYCLE)*100)/MAX_DUTY_CYCLE);
-	}
+	variable = brightness;
 
 	bool flag = true;
 	while (1)
 	{
 		int touch = get_tsi_value();
-		//printf("touch: %d\n\r", touch);
+		delay(25);
+		printf("touch: %d\n\r", touch);
 		if (touch > 1000)
 		{
 			break;
 		}
 
-		if (touch > 150)
+		if (touch > 300)
 		{
-			if (variable >= 100)
+			if (variable == 100)
 			{
 				flag = true;
-				//printf("1\n\r");
 			}
 
-			if (variable <= 50)
+			if (variable == 0)
 			{
 				flag = false;
-				//printf("2\n\r");
 			}
 
 			if (flag)
 			{
 				variable-=10;
-				//printf("3\n\r");
 			}
 
 			if (!flag)
 			{
 				variable+=10;
-				//printf("4\n\r");
 			}
-			//printf("var: %d\n\r", variable);
-			//delay(100);
-			if (variable == 100)
-			{
-				brightness = 1;
-			}
-			else
-			{
-				brightness = (int) (MAX_DUTY_CYCLE - (variable * MAX_DUTY_CYCLE)/100);
-			}
+			brightness = variable;
 			LED_ON(commands[touch_command].led_color, brightness);
+			printf("Set the brightness of LED to %d%%\n\r", brightness);
 		}
 	}
 }
@@ -378,4 +390,5 @@ static void calibrate_handler(int argc, char * argv[])
 		sscanf(argv[1], "%d", &angle);
 		calibrated_angle = angle;
 	}
+	LED_ON(commands[calibrate_command].led_color, brightness);
 }

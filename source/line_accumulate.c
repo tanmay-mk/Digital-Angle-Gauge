@@ -1,9 +1,16 @@
-/************************************************************************************************
-PES Assignment 6
-File Name: line_accumulate.c
-Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-mk
-		Alexander G. Dean
-*************************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: line_accumulate.c
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 				  tanmay.kothale@colorado.edu
+ * 				  GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ *
+ * References	: Alexander G. Dean, https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8/Serial-Demo/src/main.c
+ */
 
 /*	LIBRARY FILES	*/
 #include <stdio.h>
