@@ -35,3 +35,4 @@ sysclock_init()
   MCG->C4 |= MCG_C4_DMX32(1);
 }
 
+/*EOF*/

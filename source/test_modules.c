@@ -537,3 +537,5 @@ void test_accelerometer()															// Test function to check the MMA 'WHO A
 		printf("Accelerometer Initialized Successfully!\n\r");
 	}
 }
+
+/*EOF*/

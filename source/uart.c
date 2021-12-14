@@ -171,6 +171,6 @@ int __sys_readc(void)
 		{
 			return -1;
 		}
-
 }
 
+/*EOF*/

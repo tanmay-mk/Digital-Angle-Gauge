@@ -106,3 +106,5 @@ static void test_modules()
     test_accelerometer();
     self_test_accelerometer();
 }
+
+/*EOF*/

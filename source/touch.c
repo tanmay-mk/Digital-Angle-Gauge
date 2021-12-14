@@ -42,3 +42,4 @@ uint32_t get_tsi_value(void)
 	return scan- TOUCH_OFFSET;
 }
 
+/*EOF*/
