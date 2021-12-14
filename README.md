@@ -5,5 +5,5 @@ Project Topic 	: 	Digital Angle Gauge using MMA8451 Accelerometer and Serial Com
 Author		: 	Tanmay Mahendra Kothale  
 			(Tanmay.Kothale@Colorado.edu)  
   
-UART Parameters	:	Baud Rate: 38400
+UART Parameters	:	Baud Rate: 38400  
 			Stop Bits: 2
