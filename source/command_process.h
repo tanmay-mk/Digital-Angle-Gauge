@@ -1,9 +1,14 @@
-/************************************************************************************************
-PES Assignment 6
-File Name: command_process.h
-Author: Tanmay Mahendra Kothale - tanmay.kothale@colorado.edu - GitHub: tanmay-mk
-		Howdy Pierce - howdy.pierce@colorado.edu
-*************************************************************************************************/
+/*
+ * PES Course Project
+ *
+ * File Name	: command_process.h
+ *
+ * Author		: Tanmay Mahendra Kothale
+ * 					tanmay.kothale@colorado.edu
+ * 					GitHub : tanmay-mk
+ *
+ * Date			: December 12, 2021
+ */
 #ifndef _COMMAND_PROCESS_H_
 #define _COMMAND_PROCESS_H_
 

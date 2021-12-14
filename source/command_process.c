@@ -10,7 +10,6 @@
  * Date			: December 12, 2021
  */
 
-
 /* 	LIBRARY FILES	*/
 #include <stdio.h>
 #include <stdint.h>
@@ -51,38 +50,76 @@ enum commands {
 
 /*	HANDLER FUNCTION PROTOTYPES	*/
 
-static void author_handler	(int argc, char * argv[]);
+/*
+ * @brief	:	this function is called after the author
+ * 				command is received
+ */
+static void author_handler		(int argc, char * argv[]);
 
-static void help_handler	(int argc, char * argv[]);
+/*
+ * @brief	:	this function is called after the help
+ * 				command is received
+ */
+static void help_handler		(int argc, char * argv[]);
 
+/*
+ * @brief	:	this function is called after the brightness
+ * 				command is received
+ */
 static void brightness_handler	(int argc, char * argv[]);
 
-static void angle_handler(int argc, char * argv[]);
+/*
+ * @brief	:	this function is called after the angle
+ * 				command is received
+ */
+static void angle_handler		(int argc, char * argv[]);
 
-static void color_handler(int argc, char * argv[]);
+/*
+ * @brief	:	this function is called after the color
+ * 				command is received
+ */
+static void color_handler		(int argc, char * argv[]);
 
-static void touch_handler(int argc, char * argv[]);
+/*
+ * @brief	:	this function is called after the touch
+ * 				command is received
+ */
+static void touch_handler		(int argc, char * argv[]);
 
-static void calibrate_handler(int argc, char * argv[]);
+/*
+ * @brief	:	this function is called after the calibrate
+ * 				command is received
+ */
+static void calibrate_handler	(int argc, char * argv[]);
 
 /*	TABLE OF COMMANDS EXECUTED IN RESPONSE TO THE USER INPUT 	*/
-static cmd_table_t commands[] = {
+static cmd_table_t commands[] =
+{
 		{"author",author_handler,"Prints the name of the Author\r\n", CYAN},
+
 		{"help",help_handler,"Print this help message\r\n", NEON},
+
 		{"brightness",brightness_handler,"Adjusts the brightness of the LED. Write 'brightness <percent>'. \n\r"						\
 				"For example, brightness 50 will set the brightness of LED to 50%.\r\n", SKY_BLUE},
+
 		{"angle", angle_handler, "Allows user to set a desired angle and then starts blinking the\n\r"									\
 				"LED until the desired angle is reached. \n\rWrite 'angle <desired angle in degrees>'.\n\r", YELLOW},
+
 		{"color", color_handler, "Allows you to change the LED color assigned to a specific instruction.\n\rAvailable colors are:\n\r"	\
 				"color\t\tcodeword\n\rblue\t\tblue\n\rgreen\t\tgreen\n\ryellow\t\tyellow\n\rcyan\t\tcyan\n\rneon\t\tneon\n\r"			\
-				"magenta\t\tmagenta\n\rsky blue\tskyblue\n\rpink\t\tpink\n\rwhite\t\twhite\n\r\n\r"									\
+				"magenta\t\tmagenta\n\rsky blue\tskyblue\n\rpink\t\tpink\n\rwhite\t\twhite\n\r\n\r"										\
 				"write 'color <instruction> <color code>'\n\r", MAGENTA},
+
 		{"touch", touch_handler, "Allows user to adjust the brightness of the LED using the touch sensor\n\r"							\
 				"If the brightness of the LED is greater than 0, first, the brightness will gradually decrease\n\r"						\
 				"by 10%% and then once the brightness is 0 (LED OFF), the LED will start glowing again gradually\n\r"					\
 				"with increase of 10%% in brightness. type 'touch' and then tap until your intended brightness is\n\r"					\
 				"achieved. To exit the command, press the TSI sensor a bit harder.", BLUE},
-		{"calibrate", calibrate_handler, "TO DO.\n\r", GREEN},
+
+		{"calibrate", calibrate_handler, "Calibrates the accelerometer to a certain value. For example if the\n\r"						\
+				"we calibrate the accelerometer at 20 degrees, then 20 degrees become a reference axis (0 degrees)\n\r"					\
+				"for the accelerometer and all the readings will be taken relative to 20.\n\r\n\r"										\
+				"write 'calibrate <angle>'\n\r", GREEN},
 };
 
 static const int cmd_nos = sizeof(commands) / sizeof(cmd_table_t);	//computing number of commands
@@ -169,7 +206,6 @@ void process_command(char *input)
 
 static void brightness_handler(int argc, char * argv[])
 {
-
 	uint32_t factor;
 
 	if (argv[1]==0)
@@ -260,72 +296,82 @@ static void color_handler(int argc, char * argv[])
 	char color_name[10];
 	uint32_t instruction_id = 0xFF;
 
-	sscanf(argv[2], "%s", color_name);
-
-	for (int i=0; i < cmd_nos; i++)
+	if (argv[1]==0 || argv[2]==0)
 	{
-	    if (strcasecmp(argv[1], commands[i].cmd_name) == 0)
-	    {
-          instruction_id = i;
-	      command = true;
-	      break;
-	    }
+		printf("Too few arguments for brightness command.\n\r");
+		printf("Type help for more information.\n\r");
+		return;
+	}
 
-	  }
-	 if(!command)
-	 {
-		 printf("Invalid command: %s\r\n",argv[0]);
-	 }
+	else
+	{
+		sscanf(argv[2], "%s", color_name);
 
-	 if (strcasecmp(color_name, "blue")==0)
-	 {
-		 commands[instruction_id].led_color = BLUE;
-	 }
+		for (int i=0; i < cmd_nos; i++)
+		{
+			if (strcasecmp(argv[1], commands[i].cmd_name) == 0)
+			{
+		        instruction_id = i;
+			    command = true;
+			    break;
+			}
 
-	 else if (strcasecmp(color_name, "green")==0)
-	 {
-		 commands[instruction_id].led_color = GREEN;
-	 }
+		}
+		if(!command)
+		{
+			printf("Invalid command: %s\r\n",argv[0]);
+		}
 
-	 else if (strcasecmp(color_name, "yellow")==0)
-	 {
-		 commands[instruction_id].led_color = YELLOW;
-	 }
+		if (strcasecmp(color_name, "blue")==0)
+		{
+			commands[instruction_id].led_color = BLUE;
+		}
 
-	 else if (strcasecmp(color_name, "magenta")==0)
-	 {
-		 commands[instruction_id].led_color = MAGENTA;
-	 }
+		else if (strcasecmp(color_name, "green")==0)
+		{
+			commands[instruction_id].led_color = GREEN;
+		}
 
-	 else if (strcasecmp(color_name, "cyan")==0)
-	 {
-		 commands[instruction_id].led_color = CYAN;
-	 }
+		else if (strcasecmp(color_name, "yellow")==0)
+		{
+			commands[instruction_id].led_color = YELLOW;
+		}
 
-	 else if (strcasecmp(color_name, "white")==0)
-	 {
-		 commands[instruction_id].led_color = WHITE;
-	 }
+		else if (strcasecmp(color_name, "magenta")==0)
+		{
+			commands[instruction_id].led_color = MAGENTA;
+		}
 
-	 else if (strcasecmp(color_name, "neon")==0)
-	 {
-		 commands[instruction_id].led_color = NEON;
-	 }
+		else if (strcasecmp(color_name, "cyan")==0)
+		{
+			commands[instruction_id].led_color = CYAN;
+		}
 
-	 else if (strcasecmp(color_name, "pink")==0)
-	 {
-		 commands[instruction_id].led_color = PINK;
-	 }
+		else if (strcasecmp(color_name, "white")==0)
+		{
+			commands[instruction_id].led_color = WHITE;
+		}
 
-	 else if (strcasecmp(color_name, "skyblue")==0)
-	 {
-		 commands[instruction_id].led_color = SKY_BLUE;
-	 }
+		else if (strcasecmp(color_name, "neon")==0)
+		{
+			commands[instruction_id].led_color = NEON;
+		}
 
-	 else
-	 {
-		 printf("Invalid color %s\n\r", color_name);
-	 }
+		else if (strcasecmp(color_name, "pink")==0)
+		{
+			commands[instruction_id].led_color = PINK;
+		}
+
+		else if (strcasecmp(color_name, "skyblue")==0)
+		{
+			commands[instruction_id].led_color = SKY_BLUE;
+		}
+
+		else
+		{
+			printf("Invalid color %s\n\r", color_name);
+		}
+	}
 }
 
 static void touch_handler(int argc, char * argv[])
