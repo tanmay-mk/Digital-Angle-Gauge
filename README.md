@@ -9,6 +9,9 @@ Tanmay Mahendra Kothale
   
 ## **UART Parameters**	:  
 Baud Rate: 38400, Stop Bits: 2  
+  
+## **Recommended Terminal**	:    
+Tera Term  
 
 ## This project is implemented in **DEBUG** build only.
 
