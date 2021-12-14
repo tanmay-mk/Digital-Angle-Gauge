@@ -114,7 +114,7 @@ static cmd_table_t commands[] =
 				"If the brightness of the LED is greater than 0, first, the brightness will gradually decrease\n\r"						\
 				"by 10%% and then once the brightness is 0 (LED OFF), the LED will start glowing again gradually\n\r"					\
 				"with increase of 10%% in brightness. type 'touch' and then tap until your intended brightness is\n\r"					\
-				"achieved. To exit the command, press the TSI sensor a bit harder.", BLUE},
+				"achieved. To exit the command, press the TSI sensor a bit harder.\n\r", BLUE},
 
 		{"calibrate", calibrate_handler, "Calibrates the accelerometer to a certain value. For example if the\n\r"						\
 				"we calibrate the accelerometer at 20 degrees, then 20 degrees become a reference axis (0 degrees)\n\r"					\
@@ -230,7 +230,10 @@ static void help_handler(int argc,char * argv[])
 	printf("5. color\r\n");
 	printf("%s\n\r",commands[color_command].help_string);
 
-	printf("6. color\r\n");
+	printf("6. touch\r\n");
+	printf("%s\n\r",commands[touch_command].help_string);
+
+	printf("7. calibrate\r\n");
 	printf("%s\n\r",commands[calibrate_command].help_string);
 }
 
@@ -336,46 +339,55 @@ static void color_handler(int argc, char * argv[])
 		if (strcasecmp(color_name, "blue")==0)
 		{
 			commands[instruction_id].led_color = BLUE;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "green")==0)
 		{
 			commands[instruction_id].led_color = GREEN;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "yellow")==0)
 		{
 			commands[instruction_id].led_color = YELLOW;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "magenta")==0)
 		{
 			commands[instruction_id].led_color = MAGENTA;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "cyan")==0)
 		{
 			commands[instruction_id].led_color = CYAN;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "white")==0)
 		{
 			commands[instruction_id].led_color = WHITE;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "neon")==0)
 		{
 			commands[instruction_id].led_color = NEON;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "pink")==0)
 		{
 			commands[instruction_id].led_color = PINK;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else if (strcasecmp(color_name, "skyblue")==0)
 		{
 			commands[instruction_id].led_color = SKY_BLUE;
+			printf("Successfully changed color of %s to %s\n\r", commands[instruction_id].cmd_name, color_name);
 		}
 
 		else
@@ -398,8 +410,8 @@ static void touch_handler(int argc, char * argv[])
 	{
 		int touch = get_tsi_value(); 		//get touch value
 		delay(25);
-		printf("touch: %d\n\r", touch);
-		if (touch > 1000)					//to exit the while loop, hard tap the tsi module
+		//printf("touch: %d\n\r", touch);
+		if (touch > 600)					//to exit the while loop, hard tap the tsi module
 		{
 			break;
 		}

@@ -1,8 +1,8 @@
 command_process.c:127:6:process_command	88	static
 command_process.c:208:13:author_handler	16	static
 command_process.c:214:13:help_handler	16	static
-command_process.c:237:13:brightness_handler	24	static
-command_process.c:257:13:angle_handler	32	static
-command_process.c:301:13:color_handler	40	static
-command_process.c:389:13:touch_handler	32	static
-command_process.c:435:13:calibrate_handler	24	static
+command_process.c:240:13:brightness_handler	24	static
+command_process.c:260:13:angle_handler	32	static
+command_process.c:304:13:color_handler	48	static
+command_process.c:401:13:touch_handler	32	static
+command_process.c:447:13:calibrate_handler	24	static

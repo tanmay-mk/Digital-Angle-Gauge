@@ -8,6 +8,8 @@
  * 					GitHub : tanmay-mk
  *
  * Date			: December 12, 2021
+ *
+ * References	: Alexander G. Dean, https://github.com/alexander-g-dean/ESF/blob/master/NXP/Code/Chapter_8/I2C-Demo/src/i2c.h
  */
 #ifndef _I2C_H_
 #define _I2C_H_
