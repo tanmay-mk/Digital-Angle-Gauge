@@ -1,15 +1,15 @@
 # ECEN5813-Course-Project  
   
-##**Project Topic**	: 	Digital Angle Gauge using MMA8451 Accelerometer and Serial Communication using UART  
+## **Project Topic**	: 	Digital Angle Gauge using MMA8451 Accelerometer and Serial Communication using UART  
   
-##**Author**		: 	Tanmay Mahendra Kothale  
+## **Author**		: 	Tanmay Mahendra Kothale  
 			(Tanmay.Kothale@Colorado.edu)  
   
-##**UART Parameters**	:	Baud Rate: 38400, Stop Bits: 2  
+## **UART Parameters**	:	Baud Rate: 38400, Stop Bits: 2  
 
-##This project is implemented in **DEBUG** build only.
+## This project is implemented in **DEBUG** build only.
 
-##**Source files included**  
+## **Source files included**  
 main.c
 accelerometer.h/.c  
 cbfifo.h/.c  
@@ -23,7 +23,7 @@ test_modules.h/.c
 touch.h/.c  
 uart.h/.c  
   
-##**Project Description**
+## **Project Description**
 1. The project implements a certain set of commands using the command processor.  
 2. The project also implements a digital angle gauge.  
 3. Available commands and their description can be seen using 'help' command in the command processor. 
@@ -42,7 +42,7 @@ uart.h/.c
 | Calibrate | Green | 0x00FF00 |
 | Invalid Command | Red | 0xFF0000 |
   
-**Other available colors are:  
+**Other available colors are:**  
   
 | Color | Hex Value |
 | -- | -- |
@@ -54,6 +54,6 @@ uart.h/.c
 9. User can also change the LED brightness using brightness command. See help command for more information.  
 10. Systick interrupt is used for delay function.  
 
-##**Video Link**:  
+## **Video Link**:  
 https://drive.google.com/drive/folders/15QF-XE1jtWvhr13ZNwFdF5Y0PsxS0GEy?usp=sharing
 **Please use CU Email ID to access the video file.**
