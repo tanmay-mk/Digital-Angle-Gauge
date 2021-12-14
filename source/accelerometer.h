@@ -9,6 +9,7 @@
  *
  * Date			: December 12, 2021
  */
+
 #ifndef _ACCELEROMETER_H_
 #define _ACCELEROMETER_H_
 

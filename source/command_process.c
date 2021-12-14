@@ -306,30 +306,31 @@ static void color_handler(int argc, char * argv[])
 	char color_name[10];			//array to store the color name
 	uint32_t instruction_id = 0xFF;	//variable to store instruction id
 
-	if (argv[1]==0 || argv[2]==0)
-	{
-		printf("Too few arguments for brightness command.\n\r");
+	if (argv[1]==0 || argv[2]==0) 	//if user does not enter a value
+	{								//this error message will be printed
+		printf("Too few arguments for color command.\n\r");
 		printf("Type help for more information.\n\r");
 		return;
 	}
 
 	else
 	{
-		sscanf(argv[2], "%s", color_name);
+		sscanf(argv[2], "%s", color_name);		//storing the name of color entered in the array
 
+		//traverse through commands to know which command was chosen
 		for (int i=0; i < cmd_nos; i++)
 		{
 			if (strcasecmp(argv[1], commands[i].cmd_name) == 0)
 			{
-		        instruction_id = i;
+		        instruction_id = i;				//if instruction is found, store the instruction id
 			    command = true;
 			    break;
 			}
-
 		}
-		if(!command)
+		if(!command)			//if no command is found, return
 		{
 			printf("Invalid command: %s\r\n",argv[0]);
+			return;
 		}
 
 		if (strcasecmp(color_name, "blue")==0)
@@ -380,6 +381,7 @@ static void color_handler(int argc, char * argv[])
 		else
 		{
 			printf("Invalid color %s\n\r", color_name);
+			return;
 		}
 	}
 }
@@ -390,29 +392,29 @@ static void touch_handler(int argc, char * argv[])
 	uint32_t variable;
 
 	variable = brightness;
-
 	bool flag = true;
+
 	while (1)
 	{
-		int touch = get_tsi_value();
+		int touch = get_tsi_value(); 		//get touch value
 		delay(25);
 		printf("touch: %d\n\r", touch);
-		if (touch > 1000)
+		if (touch > 1000)					//to exit the while loop, hard tap the tsi module
 		{
 			break;
 		}
 
-		if (touch > 300)
+		if (touch > 300)					//touch detected, adjust the brightness
 		{
 			if (variable == 100)
 			{
-				flag = true;
-			}
+				flag = true;				//set the flag indicating that now the brightness
+			}								//is to be decreased gradually with a factor of 10
 
 			if (variable == 0)
 			{
-				flag = false;
-			}
+				flag = false;				//clear the flag indicating that now the brightness
+			}								//is to be increased gradually with a factor of 10
 
 			if (flag)
 			{
@@ -434,8 +436,8 @@ static void calibrate_handler(int argc, char * argv[])
 {
 	int angle=0;
 
-	if (argv[1]==0)
-	{
+	if (argv[1]==0) 			//if user does not enter a number or a value
+	{							//this error message will be printed
 		printf("Too few arguments for brightness command.\n\r");
 		printf("Type help for more information.\n\r");
 		return;
@@ -448,3 +450,5 @@ static void calibrate_handler(int argc, char * argv[])
 	}
 	LED_ON(commands[calibrate_command].led_color, brightness);
 }
+
+/*EOF*/

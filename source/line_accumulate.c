@@ -59,3 +59,5 @@ void accumulate_line(void)
 	printf("\n\r? ");
 	c = 0;
 }
+
+/*EOF*/
