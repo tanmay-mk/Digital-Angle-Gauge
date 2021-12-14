@@ -189,75 +189,20 @@ void process_command(char *input)
 	}
 
 	//Todo:Handle the command
-	for (int i=0; i < cmd_nos; i++) {
-	    if (strcasecmp(argv[0], commands[i].cmd_name) == 0) {
+	for (int i=0; i < cmd_nos; i++)
+	{
+	    if (strcasecmp(argv[0], commands[i].cmd_name) == 0)
+	    {
 	      commands[i].handler(argc, argv);
 	      command = true;
 	      break;
 	    }
-
-	  }
-	 if(!command)
-	 {
+	}
+	 if(!command) 						//if no command is found, we print a message indicating that
+	 {									//invalid command has been entered
 		 LED_ON(RED, brightness);
 		 printf("Invalid command: %s\r\n",argv[0]);
 	 }
-}
-
-static void brightness_handler(int argc, char * argv[])
-{
-	uint32_t factor;
-
-	if (argv[1]==0)
-	{
-		printf("Too few arguments for brightness command.\n\r");
-		printf("Type help for more information.\n\r");
-		return;
-	}
-
-	else
-	{
-		sscanf(argv[1], "%d", &factor);
-		brightness = factor;
-		printf("Set the brightness of LED to %d%%\n\r", brightness);
-		LED_ON(commands[brightness_command].led_color, brightness);
-	}
-}
-
-static void angle_handler(int argc, char * argv[])
-{
-	uint32_t user_angle;
-	int angle=0;
-
-	if (argv[1]==0)
-	{
-		printf("Too few arguments for brightness command.\n\r");
-		printf("Type help for more information.\n\r");
-		return;
-	}
-	else
-	{
-		sscanf(argv[1], "%d", &user_angle);
-		desired_angle = user_angle;
-		while (1)
-		{
-		   	compute_axes();
-		  	convert_axes_to_tilt();
-		   	angle = fabs(tilt)-calibrated_angle;
-		    angle = (angle<0)? angle*-1 : angle;
-		   	printf("Angle: %d\n\r", angle);
-		   	LED_ON(commands[angle_command].led_color, brightness);
-		   	delay(75);
-		   	LED_OFF();
-		   	delay(75);
-		   	if (angle == desired_angle)
-		   	{
-		   		printf("Desired angle reached. Current Angle: %d\n\r", angle);
-		   		LED_ON(commands[angle_command].led_color, brightness);
-		   		break;
-		   	}
-		}
-	}
 }
 
 static void author_handler(int argc, char * argv[])
@@ -289,12 +234,77 @@ static void help_handler(int argc,char * argv[])
 	printf("%s\n\r",commands[calibrate_command].help_string);
 }
 
+static void brightness_handler(int argc, char * argv[])
+{
+	uint32_t factor;		//a variable to store the value entered by user
+
+	if (argv[1]==0)			//if user does not enter a number or a value
+	{						//this error message will be printed
+		printf("Too few arguments for brightness command.\n\r");
+		printf("Type help for more information.\n\r");
+		return;
+	}
+
+	else
+	{
+		sscanf(argv[1], "%d", &factor);
+		brightness = factor;						//updating the global variable
+		printf("Set the brightness of LED to %d%%\n\r", brightness);
+		LED_ON(commands[brightness_command].led_color, brightness);
+	}
+}
+
+static void angle_handler(int argc, char * argv[])
+{
+	uint32_t user_angle;		//a variable to store the value entered by user
+	int angle=0;
+
+	if (argv[1]==0)				//if user does not enter a number or a value
+	{							//this error message will be printed
+		printf("Too few arguments for angle command.\n\r");
+		printf("Type help for more information.\n\r");
+		return;
+	}
+	else
+	{
+		sscanf(argv[1], "%d", &user_angle);
+		desired_angle = user_angle; 		//updating the global variable
+		while (1)
+		{									//this loop will keep running unless the desired
+											//angle is reached
+			//compute values of x, y and z axes
+		   	compute_axes();
+		   	//convert it to tilt value
+		  	convert_axes_to_tilt();
+		  	//compute angle
+		   	angle = fabs(tilt)-calibrated_angle;
+		   	//change the sign of the variable if angle is negative
+		    angle = (angle<0)? angle*-1 : angle;
+		    //print angle for user
+		   	printf("Angle: %d\n\r", angle);
+		   	//LED will be blinking unless the desired angle is reached
+		   	LED_ON(commands[angle_command].led_color, brightness);
+		   	delay(75);
+		   	LED_OFF();
+		   	delay(75);
+		   	if (angle == desired_angle)
+		   	{
+		   		printf("Desired angle reached. Current Angle: %d\n\r", angle);
+		   		LED_ON(commands[angle_command].led_color, brightness);
+		   		break;
+		   	}
+		}
+	}
+}
+
+
 static void color_handler(int argc, char * argv[])
 {
 	LED_ON(commands[color_command].led_color, brightness);
-	bool command = false;
-	char color_name[10];
-	uint32_t instruction_id = 0xFF;
+
+	bool command = false;			//variable to check whether the command was entered properly
+	char color_name[10];			//array to store the color name
+	uint32_t instruction_id = 0xFF;	//variable to store instruction id
 
 	if (argv[1]==0 || argv[2]==0)
 	{
