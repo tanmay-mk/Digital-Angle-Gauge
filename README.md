@@ -13,7 +13,7 @@ Baud Rate: 38400, Stop Bits: 2
 ## This project is implemented in **DEBUG** build only.
 
 ## **Source files included**  
-main.c
+main.c  
 accelerometer.h/.c  
 cbfifo.h/.c  
 command_process.h/.c  
